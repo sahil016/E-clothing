@@ -1,0 +1,151 @@
+{% extends "sheader.html" %}
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+
+{% block content %}
+
+       <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- wrapper  -->
+        <!-- ============================================================== -->
+        <div class="dashboard-wrapper">
+            <div class="dashboard-ecommerce">
+                <div class="container-fluid dashboard-content ">
+                    <!-- ============================================================== -->
+                    <!-- pageheader  -->
+                    <!-- ============================================================== -->
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="page-header">
+                                <h2 class="pageheader-title">E-commerce Dashboard Template </h2>
+                                <p class="pageheader-text">Nulla euismod urna eros, sit amet scelerisque torton lectus vel mauris facilisis faucibus at enim quis massa lobortis rutrum.</p>
+                                <div class="page-breadcrumb">
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">E-Commerce Dashboard Template</li>
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ============================================================== -->
+                    <!-- end pageheader  -->
+                    <!-- ============================================================== -->
+                    <div class="ecommerce-widget">
+
+                        
+                            
+                            
+                            
+                        <div class="row">
+                            <!-- ============================================================== -->
+                      
+                            <!-- ============================================================== -->
+
+                                          <!-- recent orders  -->
+                            <!-- ============================================================== -->
+                            <div class="col-xl-9 col-lg-12 col-md-6 col-sm-12 col-12">
+                                <div class="card">
+                                    <h5 class="card-header">Members</h5>
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead class="bg-light">
+                                                    <tr class="border-0">
+                                                        <th class="border-0">#</th>
+                                                        <th class="border-0">Image</th>
+                                                        <th class="border-0">Members Name</th>
+                                                        <th class="border-0">House Number</th>
+                                                        <th class="border-0">Quantity</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for i in members %}
+                                                    <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>
+                                                            <div class="m-r-10">
+                                                                <img src="{% static 'assets/images/product-pic.jpg' %}" alt="user" class="rounded" width="45">
+                                                            </div>
+                                                        </td>
+                                                        <td>{{ i.user }}</td>
+                                                        <td>{{ i.house_no }} </td>
+                                                        <td>20</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                            
+                                        <!-- 🔻 Added Input Fields Below the Table -->
+
+
+                                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+                                        <script>
+                                            $(document).ready(function() {
+                                                $("#addMemberForm").submit(function(event) {
+                                                    event.preventDefault(); // Prevent default form submission
+                                        
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        url: "{% url 'member' %}",
+                                                        data: $(this).serialize(),
+                                                        headers: { "X-CSRFToken": "{{ csrf_token }}" },
+                                                        success: function(response) {
+                                                            alert(response.message);
+                                                            location.reload(); // Reload to show the new member
+                                                        },
+                                                        error: function(response) {
+                                                            alert("Error adding member");
+                                                        }
+                                                    });
+                                                });
+                                            });
+                                        </script>
+
+                                        <div class="card-footer">
+                                            
+                                            <form method="POST" action="{% url 'member' %}">
+                                                <label> Add Members </label>
+                                                {% csrf_token %}
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <input type="text" name="user" class="form-control" placeholder="Enter Member Name" required>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input type="text" name="house_no" class="form-control" placeholder="Enter House No" required>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <button type="submit" class="btn btn-primary">Add Member</button>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- ============================================================== -->
+                            <!-- end recent orders  -->
+
+    
+                            <!-- ============================================================== -->
+                            <!-- ============================================================== -->
+                         
+                            
+                            </div>
+                            <!-- ============================================================== -->
+                            <!-- end customer acquistion  -->
+                            <!-- ============================================================== -->
+                        </div>
+                        
+                           
+            <!-- ============================================================== -->
+            {% endblock content %}
