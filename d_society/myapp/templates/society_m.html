@@ -38,7 +38,7 @@
                     <!-- ============================================================== -->
                     <div class="ecommerce-widget">
 
-                        
+                        <div id="message" style="display: none;"></div>
                             
                             
                             
@@ -61,7 +61,7 @@
                                                         <th class="border-0">Image</th>
                                                         <th class="border-0">Members Name</th>
                                                         <th class="border-0">House Number</th>
-                                                        <th class="border-0">Quantity</th>
+                                                        <th class="border-0"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -73,9 +73,9 @@
                                                                 <img src="{% static 'assets/images/product-pic.jpg' %}" alt="user" class="rounded" width="45">
                                                             </div>
                                                         </td>
-                                                        <td>{{ i.user }}</td>
-                                                        <td>{{ i.house_no }} </td>
-                                                        <td>20</td>
+                                                        <td>{{ i.user.username }}</td> <!-- Accessing the username -->
+                                                        <td>{{ i.house_no }}</td>
+                                                        <td></td> <!-- Replace with actual data if needed -->
                                                     </tr>
                                                     {% endfor %}
                                                 </tbody>
@@ -110,20 +110,18 @@
                                         </script>
 
                                         <div class="card-footer">
-                                            
                                             <form method="POST" action="{% url 'member' %}">
-                                                <label> Add Members </label>
+                                                <label>Add Members</label>
                                                 {% csrf_token %}
                                                 <div class="row">
                                                     <div class="col-md-4">
-                                                        <input type="text" name="user" class="form-control" placeholder="Enter Member Name" required>
+                                                        <input type="text" name="username" class="form-control" placeholder="Enter Member Name" required>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <input type="text" name="house_no" class="form-control" placeholder="Enter House No" required>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <button type="submit" class="btn btn-primary">Add Member</button>
-                                                        
                                                     </div>
                                                 </div>
                                             </form>
@@ -149,3 +147,27 @@
                            
             <!-- ============================================================== -->
             {% endblock content %}
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#yourFormId').on('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'), // The URL to send the request to
+            data: $(this).serialize(), // Serialize the form data
+            success: function(response) {
+                // Display success message
+                $('#message').text(response.message).css('color', 'green').show();
+            },
+            error: function(xhr) {
+                // Display error message
+                var response = JSON.parse(xhr.responseText);
+                $('#message').text(response.message).css('color', 'red').show();
+            }
+        });
+    });
+});
+</script>

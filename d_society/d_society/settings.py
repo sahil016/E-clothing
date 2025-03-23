@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -134,3 +135,10 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 CSRF_TRUSTED_ORIGINS=['http://127.0.0.1:8000']
+
+SESSION_ENGINE = "django.contrib.sessions.backends.db"  # Or another backend
+SESSION_COOKIE_SECURE = True  # For HTTPS
+SESSION_COOKIE_HTTPONLY = True
+
+# settings.py
+LOGIN_URL = '/login/'  # Set this to your custom login URL

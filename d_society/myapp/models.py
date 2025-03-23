@@ -1,23 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-9
+from django.db import models    
 
-class UserManager(BaseUserManager):
-    def create_user(self, email, username, password=None, **extra_fields):
-        if not email:
-            raise ValueError("Users must have an email address")
-        email = self.normalize_email(email)
-        user = self.model(email=email, username=username, **extra_fields)
-        user.set_password(password)  # Hash password
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, email, username, password=None, **extra_fields):
-        extra_fields.setdefault("is_staff", True)
-        extra_fields.setdefault("is_superuser", True)
-        return self.create_user(email, username, password, **extra_fields)
-
-class User(AbstractBaseUser, PermissionsMixin):  # ✅ Inherit from AbstractBaseUser
+class User(AbstractBaseUser):
     ROLE_CHOICES = [
         ('chairman', 'Chairman'),
         ('member', 'Member'),
@@ -30,18 +15,14 @@ class User(AbstractBaseUser, PermissionsMixin):  # ✅ Inherit from AbstractBase
     phone = models.CharField(max_length=15, unique=True, null=True, blank=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default="member")
     
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
 
-    objects = UserManager()  # Use custom manager
-
-    USERNAME_FIELD = "email"  
+   
     REQUIRED_FIELDS = ["username"]
 
     def __str__(self):
         return self.username
 
-    
 
 
 # Chairman Model
@@ -79,3 +60,21 @@ class Watchman(models.Model):
 
     def __str__(self):
         return f"Watchman: {self.user.username}"
+
+class Notice(models.Model):
+    title = models.CharField(max_length=200)  # Title of the notice
+    content = models.TextField()  # Content of the notice
+    created_at = models.DateTimeField(auto_now_add=True)  # Timestamp when the notice was created
+
+    def __str__(self):
+        return self.title
+    
+class Event(models.Model):
+    title = models.CharField(max_length=200)  # Title of the event
+    description = models.TextField()  # Description of the event
+    event_date = models.DateTimeField()  # Date and time of the event
+    location = models.CharField(max_length=255)  # Location of the event
+    created_at = models.DateTimeField(auto_now_add=True)  # Timestamp when the event was created
+    
+    def __str__(self):
+        return self.title

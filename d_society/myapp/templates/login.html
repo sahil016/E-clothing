@@ -57,12 +57,27 @@
 					</div>
 					{% if messages %}
 					<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-						{{ message }}
+						
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					{% endif %}
+
+
+
+
+
+					{% if messages %}
+					<div class="alert-messages">
+						{% for message in messages %}
+							<div class="alert alert-{{ message.tags }}">
+								{{ message }}
+							</div>
+						{% endfor %}
+					</div>
+				{% endif %}
+				
 					<div class="contact100-form-checkbox">
 						<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
 						<label class="label-checkbox100" for="ckb1">
@@ -79,6 +94,11 @@
 					<div class="text-center p-t-90">
 						<a class="txt1" href="#">
 							Forgot Password?
+						</a>
+					</div>
+					<div class="text-center p-t-20">
+						<a class="txt1" href={% url "register" %}>
+							register if you don't have account
 						</a>
 					</div>
 					

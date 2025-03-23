@@ -42,54 +42,41 @@
                             
                             
                             
-                        <div class="row">
-                            <!-- ============================================================== -->
-                      
-                            <!-- ============================================================== -->
-
-                                          <!-- recent orders  -->
-                            <!-- ============================================================== -->
-                            <div class="col-xl-9 col-lg-12 col-md-6 col-sm-12 col-12">
-                                <div class="card">
-                                    <h5 class="card-header">Members</h5>
-                                    <div class="card-body p-0">
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Profile Picture</th>
-                                                        <th>Username</th>
-                                                        <th>Shift</th>
-                                                        <th>Actions</th> <!-- Optional: for any actions like edit/delete -->
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {% for i in watchmen %}
-                                                    <tr>
-                                                        <td>{{ forloop.counter }}</td>
-                                                        <td>
-                                                            <div class="m-r-10">
-                                                                <img src="{% static 'assets/images/product-pic.jpg' %}" alt="user" class="rounded" width="45">
-                                                            </div>
-                                                        </td>
-                                                        <td>{{ i.user.username }}</td> <!-- Accessing the username -->
-                                                        <td>{{ i.shift }}</td> <!-- Accessing the shift -->
-                                                        <td>
-                                                            <!-- Optional: Add buttons for actions like edit or delete -->
-                                                            
-                                                            <a href="{% url 'delete_watchman' i.id %}" class="btn btn-danger btn-sm">Delete</a>
-                                                        </td>
-                                                    </tr>
-                                                    {% empty %}
-                                                    <tr>
-                                                        <td colspan="5">No watchmen found.</td>
-                                                    </tr>
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
-                                           
-                                        </div>
+                        <div class="container mt-5">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5>Notices</h5>
+                                    <table class="table">
+                                        <thead class="bg-light">
+                                            <tr class="border-0">
+                                                <th class="border-0">#</th>
+                                                <th class="border-0">Notice Title</th>
+                                                <th class="border-0">Content</th>
+                                                <th class="border-0">Created At</th>
+                                                <th class="border-0"></th> <!-- Optional for actions like delete -->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for notice in notices %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ notice.title }}</td> <!-- Accessing the notice title -->
+                                                <td>{{ notice.content }}</td> <!-- Accessing the notice content -->
+                                                <td>{{ notice.created_at }}</td> <!-- Accessing the created timestamp -->
+                                                <td>
+                                                    <a href="{% url 'delete_notice' notice.id %}" class="btn btn-danger btn-sm">Delete</a>
+                                                </td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="5">No notices available.</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                             
                                         <!-- 🔻 Added Input Fields Below the Table -->
 
@@ -118,26 +105,28 @@
                                             });
                                         </script>
 
-                                        <div class="card-footer">
-                                            <form method="POST" action="{% url 'add_watchman' %}">
-                                                <label>Add Watchman</label>
-                                                {% csrf_token %}
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <input type="text" name="username" class="form-control" placeholder="Enter Watchman Name" required>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <select name="shift" class="form-control" required>
-                                                            <option value="">Select Shift</option>
-                                                            <option value="day">Day</option>
-                                                            <option value="night">Night</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <button type="submit" class="btn btn-primary">Add Watchman</button>
-                                                    </div>
+                                        <div class="container mt-5">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5>Add Notice</h5>
                                                 </div>
-                                            </form>
+                                                <div class="card-body">
+                                                    <form method="POST" action="{% url 'add_notice' %}">
+                                                        {% csrf_token %}
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <input type="text" name="title" class="form-control" placeholder="Enter Notice Title" required>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <textarea name="content" class="form-control" placeholder="Enter Notice Content" required></textarea>
+                                                            </div>
+                                                            <div class="col-md-12 mt-3">
+                                                                <button type="submit" class="btn btn-primary">Add Notice</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
